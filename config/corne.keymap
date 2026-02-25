@@ -1,35 +1,95 @@
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/outputs.h>
+
 combos {
         compatible = "zmk,combos";
 
-        // 1. 복사 (좌측 X + C)
+        // 1. 복사 (좌측 X + C) -> 검지/중지 아래 라인
         copy {
             bindings = <&kp LC(C)>;
             key-positions = <26 27>; 
-        };
+        }
 
-        // 2. 붙여넣기 (좌측 C + V)
+        // 2. 붙여넣기 (좌측 C + V) -> 중지/약지 아래 라인
         paste {
             bindings = <&kp LC(V)>;
             key-positions = <27 28>; 
-        };
+        }
 
-        // 3. 캡처 (좌측 S + D) - 포카 설정
+        // 3. 화면 캡처 (좌측 S + D) -> 홈로우 중지/약지
         phoca {
             bindings = <&kp LS(LG(S))>;
             key-positions = <14 15>;
-        };
+        }
 
-        // 4. 한영 전환 (우측 K + L)
+        // 4. [수정] 한영 전환 (우측 K + L) -> 20번, 21번
         he {
             bindings = <&kp RIGHT_ALT>;
             key-positions = <20 21>;
-            timeout-ms = <50>; // 콤보 인식 시간 최적화
-        };
+            timeout-ms = <40>; // 더 정밀하게 동시 입력을 감지
+        }
 
-        // 5. 느낌표 (우측 L + ;)
+        // 5. [수정] 느낌표 (우측 L + ;) -> 21번, 22번
         nk {
             bindings = <&kp EXCLAMATION>;
             key-positions = <21 22>;
-            timeout-ms = <50>;
+            timeout-ms = <40>;
+        }
+    };
+    behaviors {
+        hml: homerow_mods_left {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HOMEROW_MODS_LEFT";
+            bindings = <&kp>, <&kp>;
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            quick-tap-ms = <150>;
+            flavor = "tap-preferred";
+            hold-trigger-key-positions = <6 7 8 9 10 11 18 19 20 21 22 23 30 31 32 33 34 35 39 40 41>;
+        };
+
+        hmr: homerow_mods_right {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HOMEROW_MODS_RIGHT";
+            bindings = <&kp>, <&kp>;
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            quick-tap-ms = <150>;
+            flavor = "tap-preferred";
+            hold-trigger-key-positions = <0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29 36 37 38>;
         };
     };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        layer_0 {
+            bindings = <
+&kp TAB    &kp Q                &kp W            &kp E        &kp R                &kp T          &kp Y        &kp U         &kp I        &kp O               &kp P                 &kp BSPC
+&kp CAPS   &hml LCTRL A         &hml LGUI S      &hml LALT D  &hml RSHFT F         &kp G          &kp H        &hmr RSHFT J  &hmr RALT K  &hmr RGUI L         &hmr RSHFT SEMI       &kp K_VOL_UP
+&kp LSHFT  &kp Z                &kp X            &kp C        &kp V                &kp B          &kp N        &kp M         &kp COMMA    &kp DOT             &kp FSLH              &kp K_VOL_DN
+                                                 &kp ESC      &kp SPACE            &lt 2 SPACE    &lt 1 ENTER  &kp RALT      &kp DEL
+            >;
+        };
+
+        layer_1 {
+            bindings = <
+&key_repeat  &kp F1    &kp F2    &kp F3       &kp F4       &kp F5         &key_repeat  &key_repeat  &kp UP       &kp LS(LBRC)  &kp LS(RBRC)  &key_repeat
+&key_repeat  &kp F6    &kp F7    &kp F8       &kp F9       &kp F10        &key_repeat  &kp LEFT     &kp DOWN     &kp RIGHT     &key_repeat   &key_repeat
+&key_repeat  &kp F11   &kp F12   &key_repeat  &key_repeat  &key_repeat    &key_repeat  &key_repeat  &key_repeat  &key_repeat   &key_repeat   &key_repeat
+                                 &key_repeat  &key_repeat  &key_repeat    &key_repeat  &key_repeat  &key_repeat
+            >;
+        };
+
+        layer_2 {
+            bindings = <
+&key_repeat  &kp EXCL  &kp AT    &kp HASH     &kp DLLR             &kp PRCNT              &key_repeat  &kp N7       &kp N8        &kp N9        &key_repeat  &key_repeat
+&key_repeat  &kp LCTRL &kp AMPS  &kp ASTRK    &kp LPAR             &kp RPAR               &kp PLUS     &kp N4       &kp N5        &kp N6        &kp MINUS    &key_repeat
+&key_repeat  &kp UNDER &kp PLUS  &key_repeat  &key_repeat          &key_repeat            &kp COMMA    &kp N1       &kp N2        &kp N3        &kp DOT      &key_repeat
+                                 &key_repeat  &key_repeat          &key_repeat            &key_repeat  &key_repeat  &kp N0
+            >;
+        };
+    };
+};
