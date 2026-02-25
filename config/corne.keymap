@@ -3,41 +3,42 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/outputs.h>
 
-combos {
+/ {
+    // [1] 콤보 설정: K+L(한영), L+;(느낌표) 완벽 보정
+    combos {
         compatible = "zmk,combos";
 
-        // 1. 복사 (좌측 X + C) -> 검지/중지 아래 라인
         copy {
             bindings = <&kp LC(C)>;
-            key-positions = <26 27>; 
-        }
+            key-positions = <26 27>;
+        };
 
-        // 2. 붙여넣기 (좌측 C + V) -> 중지/약지 아래 라인
         paste {
             bindings = <&kp LC(V)>;
-            key-positions = <27 28>; 
-        }
+            key-positions = <27 28>;
+        };
 
-        // 3. 화면 캡처 (좌측 S + D) -> 홈로우 중지/약지
         phoca {
             bindings = <&kp LS(LG(S))>;
             key-positions = <14 15>;
-        }
+        };
 
-        // 4. [수정] 한영 전환 (우측 K + L) -> 20번, 21번
+        // 우측 K(20) + L(21) = 한영전환
         he {
             bindings = <&kp RIGHT_ALT>;
             key-positions = <20 21>;
-            timeout-ms = <40>; // 더 정밀하게 동시 입력을 감지
-        }
+            timeout-ms = <40>;
+        };
 
-        // 5. [수정] 느낌표 (우측 L + ;) -> 21번, 22번
+        // 우측 L(21) + ;(22) = 느낌표
         nk {
             bindings = <&kp EXCLAMATION>;
             key-positions = <21 22>;
             timeout-ms = <40>;
-        }
+        };
     };
+
+    // [2] 홈로우 모디파이어 설정 (손가락 위치 고정)
     behaviors {
         hml: homerow_mods_left {
             compatible = "zmk,behavior-hold-tap";
@@ -65,30 +66,33 @@ combos {
     keymap {
         compatible = "zmk,keymap";
 
+        // [Layer 0] 기본 자판 및 홈로우 모드
         layer_0 {
             bindings = <
-&kp TAB    &kp Q                &kp W            &kp E        &kp R                &kp T          &kp Y        &kp U         &kp I        &kp O               &kp P                 &kp BSPC
-&kp CAPS   &hml LCTRL A         &hml LGUI S      &hml LALT D  &hml RSHFT F         &kp G          &kp H        &hmr RSHFT J  &hmr RALT K  &hmr RGUI L         &hmr RSHFT SEMI       &kp K_VOL_UP
-&kp LSHFT  &kp Z                &kp X            &kp C        &kp V                &kp B          &kp N        &kp M         &kp COMMA    &kp DOT             &kp FSLH              &kp K_VOL_DN
-                                                 &kp ESC      &kp SPACE            &lt 2 SPACE    &lt 1 ENTER  &kp RALT      &kp DEL
+&kp TAB    &kp Q           &kp W           &kp E        &kp R           &kp T          &kp Y        &kp U        &kp I        &kp O           &kp P           &kp BSPC
+&kp CAPS   &hml LCTRL A    &hml LGUI S     &hml LALT D  &hml RSHFT F    &kp G          &kp H        &hmr RSHFT J &hmr RALT K  &hmr RGUI L     &hmr RSHFT SEMI &kp K_VOL_UP
+&kp LSHFT  &kp Z           &kp X           &kp C        &kp V           &kp B          &kp N        &kp M        &kp COMMA    &kp DOT         &kp FSLH        &kp K_VOL_DN
+                                           &kp ESC      &kp SPACE       &lt 2 SPACE    &lt 1 ENTER  &kp B        &kp DEL
             >;
         };
 
+        // [Layer 1] 방향키 및 F키 (엄지 엔터 홀드 시)
         layer_1 {
             bindings = <
-&key_repeat  &kp F1    &kp F2    &kp F3       &kp F4       &kp F5         &key_repeat  &key_repeat  &kp UP       &kp LS(LBRC)  &kp LS(RBRC)  &key_repeat
-&key_repeat  &kp F6    &kp F7    &kp F8       &kp F9       &kp F10        &key_repeat  &kp LEFT     &kp DOWN     &kp RIGHT     &key_repeat   &key_repeat
-&key_repeat  &kp F11   &kp F12   &key_repeat  &key_repeat  &key_repeat    &key_repeat  &key_repeat  &key_repeat  &key_repeat   &key_repeat   &key_repeat
-                                 &key_repeat  &key_repeat  &key_repeat    &key_repeat  &key_repeat  &key_repeat
+&key_repeat &kp F1   &kp F2   &kp F3      &kp F4      &kp F5         &key_repeat &key_repeat &kp UP     &kp LS(LBRC) &kp LS(RBRC) &key_repeat
+&key_repeat &kp F6   &kp F7   &kp F8      &kp F9      &kp F10        &key_repeat &kp LEFT    &kp DOWN   &kp RIGHT    &key_repeat  &key_repeat
+&key_repeat &kp F11  &kp F12  &key_repeat &key_repeat &key_repeat    &key_repeat &key_repeat &key_repeat &key_repeat &key_repeat  &key_repeat
+                              &key_repeat &key_repeat &key_repeat    &key_repeat &key_repeat &key_repeat
             >;
         };
 
+        // [Layer 2] 숫자 및 특수기호 (엄지 스페이스 홀드 시)
         layer_2 {
             bindings = <
-&key_repeat  &kp EXCL  &kp AT    &kp HASH     &kp DLLR             &kp PRCNT              &key_repeat  &kp N7       &kp N8        &kp N9        &key_repeat  &key_repeat
-&key_repeat  &kp LCTRL &kp AMPS  &kp ASTRK    &kp LPAR             &kp RPAR               &kp PLUS     &kp N4       &kp N5        &kp N6        &kp MINUS    &key_repeat
-&key_repeat  &kp UNDER &kp PLUS  &key_repeat  &key_repeat          &key_repeat            &kp COMMA    &kp N1       &kp N2        &kp N3        &kp DOT      &key_repeat
-                                 &key_repeat  &key_repeat          &key_repeat            &key_repeat  &key_repeat  &kp N0
+&key_repeat &kp EXCL  &kp AT    &kp HASH     &kp DLLR     &kp PRCNT      &key_repeat &kp N7      &kp N8       &kp N9       &key_repeat &key_repeat
+&key_repeat &kp LCTRL &kp AMPS  &kp ASTRK    &kp LPAR     &kp RPAR       &kp PLUS    &kp N4      &kp N5       &kp N6       &kp MINUS   &key_repeat
+&key_repeat &kp UNDER &kp PLUS  &key_repeat  &key_repeat  &key_repeat    &kp COMMA   &kp N1      &kp N2       &kp N3       &kp DOT     &key_repeat
+                                &key_repeat  &key_repeat  &key_repeat    &key_repeat &key_repeat &kp N0
             >;
         };
     };
