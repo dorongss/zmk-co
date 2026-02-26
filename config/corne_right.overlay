@@ -1,3 +1,5 @@
+#include <dt-bindings/zmk/pointing.h>
+
 &pro_micro_i2c {
     status = "okay";
 
@@ -5,7 +7,8 @@
         compatible = "pimoroni,trackball";
         reg = <0x0a>;
         label = "TRACKBALL";
-        /* 대표님이 말씀하신 107번 핀(P1.07) 설정입니다 */
-        int-gpios = <&gpio1 7 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+        
+        /* 썸 2번을 죽이던 주범인 int-gpios 코드를 영구 삭제했습니다! */
+        /* 이제 핀 충돌 없이 I2C 통신(SDA, SCL)만으로 순수하게 작동합니다. */
     };
 };
