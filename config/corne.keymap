@@ -1,186 +1,107 @@
 #include <behaviors.dtsi>
-#include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/outputs.h>
 
 / {
-    // [1] 콤보 설정: 세미콜론(;) 누락 수정 및 위치 보정
-
+    // [1] 콤보 설정 (속도 및 간섭 최적화 완료)
     combos {
         compatible = "zmk,combos";
 
-        // Q(1) + W(2) = <&kp CAPS>;
+        // G(17) + H(18) = 쌍따옴표 (")
+        combo_dqt {
+            bindings = <&kp DQT>;
+            key-positions = <17 18>;
+            timeout-ms = <50>; 
+        };
 
-        combo_caps {
-            bindings = <&kp CAPS>;
+        // Q(1) + W(2) = 캡스 워드 (단어 하나만 대문자로 쓰고 자동 종료)
+        combo_caps_word {
+            bindings = <&caps_word>;
             key-positions = <1 2>;
             timeout-ms = <50>;
         };
 
+        // J(19) + K(20) = 엔터 (Enter) -> 새끼손가락 해방!
+        combo_enter {
+            bindings = <&kp ENTER>;
+            key-positions = <19 20>;
+            timeout-ms = <50>;
+        };
+
+        // O(9) + P(10) = 단어 지우기 (Ctrl + Backspace) -> 수정 작업의 핵심
+        combo_del_word {
+            bindings = <&kp LC(BSPC)>;
+            key-positions = <9 10>;
+            timeout-ms = <50>;
+        };
+
         // A(13) + S(14) = 물결 (~)
-
-        combo_tilde {
-            bindings = <&kp TILDE>;
-            key-positions = <13 14>;
-            timeout-ms = <60>;
-        };
-
+        combo_tilde { bindings = <&kp TILDE>; key-positions = <13 14>; timeout-ms = <60>; };
+        
         // S(14) + D(15) = 하이픈 (-)
-
-        combo_minus {
-            bindings = <&kp MINUS>;
-            key-positions = <14 15>;
-            timeout-ms = <60>;
-        };
-
+        combo_minus { bindings = <&kp MINUS>; key-positions = <14 15>; timeout-ms = <60>; };
+        
         // D(15) + F(16) = 화면 캡쳐 (Win+Shift+S)
-
-        combo_capture {
-            bindings = <&kp LS(LG(S))>;
-            key-positions = <15 16>;
-            timeout-ms = <75>; // 넉넉하게 인식
-            require-prior-idle-ms = <150>; // 타자 치는 도중 오타 방지
+        combo_capture { 
+            bindings = <&kp LS(LG(S))>; 
+            key-positions = <15 16>; 
+            timeout-ms = <75>; 
+            require-prior-idle-ms = <150>; 
         };
-
-        // 기존 콤보들 유지
-
-        copy {
-            bindings = <&kp LC(C)>;
-            key-positions = <26 27>;
-            timeout-ms = <50>;
-        };
-
-        paste {
-            bindings = <&kp LC(V)>;
-            key-positions = <27 28>;
-            timeout-ms = <50>;
-        };
-
-        he {
-            bindings = <&kp RIGHT_ALT>;
-            key-positions = <20 21>;
-            timeout-ms = <50>;
-        };
+        
+        // 기존 단축키 콤보들 유지
+        copy { bindings = <&kp LC(C)>; key-positions = <26 27>; timeout-ms = <50>; };
+        paste { bindings = <&kp LC(V)>; key-positions = <27 28>; timeout-ms = <50>; };
+        he { bindings = <&kp RIGHT_ALT>; key-positions = <20 21>; timeout-ms = <50>; };
     };
 
-    // [2] 탭댄스 설정 (쌍자음 및 특수문자)
-
+    // [2] 탭댄스 및 특수 동작 설정 (딜레이 200ms -> 140ms 대폭 축소)
     behaviors {
-        // 쌍자음 탭댄스
-
-        td_qq: td_qq {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&kp Q>, <&kp LS(Q)>;
-        };
-
-        td_ww: td_ww {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&kp W>, <&kp LS(W)>;
-        };
-
-        td_ee: td_ee {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&kp E>, <&kp LS(E)>;
-        };
-
-        td_rr: td_rr {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&kp R>, <&kp LS(R)>;
-        };
-
-        td_tt: td_tt {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&kp T>, <&kp LS(T)>;
-        };
+        // 쌍자음 탭댄스 (빠릿하게 쳐지도록 최적화)
+        td_qq: td_qq { compatible = "zmk,behavior-tap-dance"; #binding-cells = <0>; tapping-term-ms = <140>; bindings = <&kp Q>, <&kp LS(Q)>; }; 
+        td_ww: td_ww { compatible = "zmk,behavior-tap-dance"; #binding-cells = <0>; tapping-term-ms = <140>; bindings = <&kp W>, <&kp LS(W)>; }; 
+        td_ee: td_ee { compatible = "zmk,behavior-tap-dance"; #binding-cells = <0>; tapping-term-ms = <140>; bindings = <&kp E>, <&kp LS(E)>; }; 
+        td_rr: td_rr { compatible = "zmk,behavior-tap-dance"; #binding-cells = <0>; tapping-term-ms = <140>; bindings = <&kp R>, <&kp LS(R)>; }; 
+        td_tt: td_tt { compatible = "zmk,behavior-tap-dance"; #binding-cells = <0>; tapping-term-ms = <140>; bindings = <&kp T>, <&kp LS(T)>; }; 
 
         // 모음 탭댄스 (ㅖ, ㅒ)
+        td_p: td_p { compatible = "zmk,behavior-tap-dance"; #binding-cells = <0>; tapping-term-ms = <140>; bindings = <&kp P>, <&kp LS(P)>; }; 
+        td_o: td_o { compatible = "zmk,behavior-tap-dance"; #binding-cells = <0>; tapping-term-ms = <140>; bindings = <&kp O>, <&kp LS(O)>; }; 
 
-        td_p: td_p {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&kp P>, <&kp LS(P)>;
-        };
-
-        td_o: td_o {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&kp O>, <&kp LS(O)>;
-        };
-
-        // 하이픈(-) -> 언더바(_) 탭댄스 (A 자리에 배치)
-
-        td_minus: td_minus {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <250>;
-            bindings = <&kp MINUS>, <&kp UNDER>;
-        };
-
-        // 홈로우 모디파이어
-
-        hml: hml {
-            compatible = "zmk,behavior-hold-tap";
-            label = "HML";
-            bindings = <&kp>, <&kp>;
-
-            #binding-cells = <2>;
-            tapping-term-ms = <200>;
-            quick-tap-ms = <150>;
-            flavor = "tap-preferred";
-            hold-trigger-key-positions = <6 7 8 9 10 11 18 19 20 21 22 23 30 31 32 33 34 35 39 40 41>;
-        };
-
-        hmr: hmr {
-            compatible = "zmk,behavior-hold-tap";
-            label = "HMR";
-            bindings = <&kp>, <&kp>;
-
-            #binding-cells = <2>;
-            tapping-term-ms = <200>;
-            quick-tap-ms = <150>;
-            flavor = "tap-preferred";
-            hold-trigger-key-positions = <0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29 36 37 38>;
-        };
+        // 홈로우 모디파이어 (HRM - 꾹 누르면 Shift, Ctrl 등 발동)
+        hml: hml { compatible = "zmk,behavior-hold-tap"; label = "HML"; bindings = <&kp>, <&kp>; #binding-cells = <2>; tapping-term-ms = <200>; quick-tap-ms = <150>; flavor = "tap-preferred"; hold-trigger-key-positions = <6 7 8 9 10 11 18 19 20 21 22 23 30 31 32 33 34 35 39 40 41>; };
+        hmr: hmr { compatible = "zmk,behavior-hold-tap"; label = "HMR"; bindings = <&kp>, <&kp>; #binding-cells = <2>; tapping-term-ms = <200>; quick-tap-ms = <150>; flavor = "tap-preferred"; hold-trigger-key-positions = <0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29 36 37 38>; };
     };
 
+    // [3] 키맵 배열 (오른쪽 엄지에 백스페이스 탑재 완료)
     keymap {
         compatible = "zmk,keymap";
 
         layer_0 {
             bindings = <
-&kp TAB    &td_qq        &td_ww       &td_ee       &td_rr        &td_tt         &kp Y        &kp U         &kp I        &td_o        &td_p            &kp BSPC
-&kp CAPS   &hml LCTRL A  &hml LGUI S  &hml LALT D  &hml RSHFT F  &kp G          &kp H        &hmr RSHFT J  &hmr RALT K  &hmr RGUI L  &hmr RSHFT SEMI  &kp K_VOL_UP
-&kp LSHFT  &kp Z         &kp X        &kp C        &kp V         &kp B          &kp N        &kp M         &kp COMMA    &kp DOT      &kp FSLH         &kp K_VOL_DN
-                                      &kp ESC      &kp SPACE     &lt 2 SPACE    &lt 1 ENTER  &kp B         &kp DEL
+&kp TAB    &td_qq          &td_ww          &td_ee       &td_rr          &td_tt         &kp Y        &kp U        &kp I        &td_o           &td_p           &kp BSPC
+&kp CAPS   &hml LCTRL A    &hml LGUI S     &hml LALT D  &hml RSHFT F    &kp G          &kp H        &hmr RSHFT J &hmr RALT K  &hmr RGUI L     &hmr RSHFT SEMI &kp K_VOL_UP
+&kp LSHFT  &kp Z           &kp X           &kp C        &kp V           &kp B          &kp N        &kp M        &kp COMMA    &kp DOT         &kp FSLH        &kp K_VOL_DN
+                                           &kp ESC      &kp SPACE       &lt 2 SPACE    &lt 1 BSPC   &kp RALT     &kp DEL
             >;
         };
 
         layer_1 {
             bindings = <
-&kp F1      &kp F2        &kp F3        &kp F4        &kp F5        &kp F6          &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp UP    &kp LBKT   &kp RBKT  &kp BSPC
-&kp F7      &kp F8        &kp F8        &kp F10       &kp F11       &kp F12         &kp HOME              &kp LEFT               &kp DOWN  &kp RIGHT  &kp END   &kp ENTER
-&bt BT_CLR  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &none                 &none                  &none     &none      &none     &none
-                                        &trans        &trans        &trans          &trans                &trans                 &trans
+&kp F1      &kp F2       &kp F3       &kp F4       &kp F5       &kp F6         &kp F7      &kp F8      &kp UP     &kp LBKT     &kp RBKT     &kp BSPC
+&kp F12     &kp F7       &kp F8       &kp F9       &kp F10      &kp F11        &kp HOME    &kp LEFT    &kp DOWN   &kp RIGHT    &kp END      &kp ENTER
+&bt BT_CLR  &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4  &none       &none       &none       &none       &none        &none
+                                      &trans       &trans       &trans         &trans      &trans      &trans
             >;
         };
 
         layer_2 {
             bindings = <
-&kp ESC    &kp EXCL   &kp AT     &kp HASH  &kp DLLR  &kp PRCNT    &kp CARET  &kp N7  &kp N8  &kp N9  &kp ASTRK  &kp BSPC
-&kp LCTRL  &kp AMPS   &kp ASTRK  &kp LPAR  &kp RPAR  &kp PLUS     &kp MINUS  &kp N4  &kp N5  &kp N6  &kp PLUS   &kp ENTER
-&kp LSHFT  &kp UNDER  &kp PLUS   &kp LBRC  &kp RBRC  &kp PIPE     &kp EQUAL  &kp N1  &kp N2  &kp N3  &kp DOT    &kp RSHFT
-                                 &trans    &trans    &trans       &trans     &trans  &kp N0
+&kp ESC     &kp EXCL  &kp AT    &kp HASH     &kp DLLR     &kp PRCNT      &kp CARET   &kp N7      &kp N8       &kp N9       &kp ASTRK   &kp BSPC
+&kp LCTRL   &kp AMPS  &kp ASTRK &kp LPAR     &kp RPAR     &kp PLUS       &kp MINUS   &kp N4      &kp N5       &kp N6       &kp PLUS    &kp ENTER
+&kp LSHFT   &kp UNDER &kp PLUS  &kp LBRC     &kp RBRC     &kp PIPE       &kp EQUAL   &kp N1      &kp N2       &kp N3       &kp DOT     &kp RSHFT
+                                &trans       &trans       &trans         &trans      &trans      &kp N0
             >;
         };
     };
