@@ -18,9 +18,10 @@
             key-positions = <27 28>;
         };
 
-        phoca {
+       phoca {
             bindings = <&kp LS(LG(S))>;
-            key-positions = <14 15>;
+            key-positions = <15 16>; // D+F 위치로 이동
+            timeout-ms = <30>;       // 더 정밀하게 타격해야 작동
         };
 
         // 우측 K(20) + L(21) = 한영전환
