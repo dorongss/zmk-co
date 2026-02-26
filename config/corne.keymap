@@ -3,10 +3,12 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/outputs.h>
 
-combos {
+/ {     // <--- 대표님, 바로 이 부분이 지워져 있었습니다!!!
+    // [1] 콤보 설정: 세미콜론(;) 누락 수정 및 위치 보정
+    combos {
         compatible = "zmk,combos";
 
-        // Q(1) + W(2) = 캡스락
+        // Q(1) + W(2) = <&kp CAPS>;
         combo_caps {
             bindings = <&kp CAPS>;
             key-positions = <1 2>;
